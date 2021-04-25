@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Winning member:</strong>
+  <%= @match.winning_member_id %>
+</p>
+
+<p>
+  <strong>Losing member:</strong>
+  <%= @match.losing_member_id %>
+</p>
+
+<p>
+  <strong>Draw:</strong>
+  <%= @match.draw %>
+</p>
+
+<%= link_to 'Edit', edit_match_path(@match) %> |
+<%= link_to 'Back', matches_path %>

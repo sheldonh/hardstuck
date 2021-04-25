@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  winning_member: one
+  losing_member: two
+  draw: false
+
+two:
+  winning_member: two
+  losing_member: one
+  draw: false
