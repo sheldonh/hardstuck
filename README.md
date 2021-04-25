@@ -30,3 +30,32 @@ sed -i -e 's/^\(Rails.application.configure.*\)/\1\n  config.hosts << "'${C9_HOS
 rails db:create db:migrate
 rails server -b 0.0.0.0
 ```
+
+Fantasy code:
+
+```
+match = Match.create(winner: member1, loser: member2, draw: true)
+match.ranking_changes
+# => []
+
+match = Match.create(winner: winner, loser: loser, draw: false)
+ranking_changes = match.ranking_changes
+# => [Member<...>, Member<...>, ...]
+puts ranking_changes.map { |x| x.changes }.to_yaml
+# ---
+# - rank:
+#   - 1
+#   - 2
+# - rank:
+#   - 2
+#   - 3
+# - rank:
+#   - 3
+#   - 2
+
+ranking_changes.each { |x| x.save! }
+# or perhaps 
+match.apply_ranking_changes
+
+# Probably want a RankingChange model, but let's not get carried away just yet.
+```
