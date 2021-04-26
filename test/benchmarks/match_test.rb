@@ -11,10 +11,13 @@ class MatchBenchmark < Minitest::Benchmark
 
   def bench_apply_ranking_changes
     assert_performance_linear 0.1 do |i|
-      @members = (0..i).map { Member.create }
-      match = Match.new(winning_member: @members.last, losing_member: @members.first, draw: false)
-      match.apply_ranking_changes
-      Member.destroy_all
+      Member.transaction do
+        Member.destroy_all
+        @members = (0..i).map { Member.create }
+        match = Match.new(winning_member: @members.last, losing_member: @members.first, draw: false)
+        match.apply_ranking_changes
+        raise ActiveRecord::Rollback
+      end
     end
   end
 
