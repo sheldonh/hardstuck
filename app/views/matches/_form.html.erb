@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= form.label :winning_member_id %>
-    <%= form.text_field :winning_member_id %>
+    <%= form.collection_select :winning_member_id, Member.order(:name), :id, :full_name, prompt: true, include_blank: false %>
   </div>
 
   <div class="field">
     <%= form.label :losing_member_id %>
-    <%= form.text_field :losing_member_id %>
+    <%= form.collection_select :losing_member_id, Member.order(:name), :id, :full_name, prompt: true, include_blank: false %>
   </div>
 
   <div class="field">

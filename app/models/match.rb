@@ -2,6 +2,9 @@ class Match < ApplicationRecord
   belongs_to :winning_member, class_name: "Member"
   belongs_to :losing_member, class_name: "Member"
 
+  # TODO review the use of ActiveRecord hooks for business logic
+  before_create :apply_changes
+
   def higher_ranked_member
     winning_member.outranks?(losing_member) ? winning_member : losing_member
   end
@@ -27,4 +30,19 @@ class Match < ApplicationRecord
     end
   end
 
+  def apply_games_played_changes
+    transaction do
+      winning_member.increment!(:games_played)
+      losing_member.increment!(:games_played)
+    end
+  end
+  
+  private
+  
+  def apply_changes
+    transaction do
+      apply_games_played_changes
+      apply_ranking_changes
+    end
+  end
 end

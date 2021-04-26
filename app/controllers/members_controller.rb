@@ -3,7 +3,7 @@ class MembersController < ApplicationController
 
   # GET /members or /members.json
   def index
-    @members = Member.all
+    @members = Member.order(:current_rank).all
   end
 
   # GET /members/1 or /members/1.json
