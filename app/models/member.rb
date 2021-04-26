@@ -47,7 +47,7 @@ class Member < ApplicationRecord
 
   def occupy_lowest_rank
     if !self.current_rank?
-      self.current_rank = Member.maximum(:current_rank) + 1
+      self.current_rank = (Member.maximum(:current_rank) || 0) + 1
     end
   end
 end
