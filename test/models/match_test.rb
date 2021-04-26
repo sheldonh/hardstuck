@@ -31,7 +31,6 @@ class MatchTest < ActiveSupport::TestCase
     end
   end
 
-  # TODO verify assumption: rounding down
   test "increases rank of lower-ranked winner by half original rank difference" do
     six = Array.new(4) { Member.create }.last
     match = Match.new(winning_member: six, losing_member: members(:one), draw: false)
