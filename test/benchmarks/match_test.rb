@@ -1,7 +1,7 @@
 require "test_helper"
 require "minitest/benchmark"
 
-exit(0) unless ENV["WANT_BENCHMARKS"]
+return unless ENV["WANT_BENCHMARKS"]
 
 class MatchBenchmark < Minitest::Benchmark
 
