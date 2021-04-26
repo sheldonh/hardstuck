@@ -13,21 +13,37 @@ class Match < ApplicationRecord
     winning_member.outranks?(losing_member) ? losing_member : winning_member
   end
 
+  def ranking_changes
+    min_rank = [winning_member.current_rank, losing_member.current_rank].min
+    max_rank = [winning_member.current_rank, losing_member.current_rank].max
+    members = Member.where(current_rank: min_rank..max_rank).order(:current_rank).to_a
+    if draw?
+      if !lower_ranked_member.rank_adjacent?(higher_ranked_member)
+        members.insert(-2, members.pop)
+      end
+    elsif losing_member.outranks?(winning_member)
+      rank_difference = (winning_member.current_rank - losing_member.current_rank).abs
+      uprank_earned = rank_difference / 2
+      members.insert(1, members.shift)
+      members.insert(-(uprank_earned + 1), members.pop)
+    end
+    members.each_with_index do |member, i|
+      member.current_rank = min_rank + i
+    end
+    members.
+      reject { |member| !member.changed? }.
+      map { |member| {id: member.id, ranking_change: member.changes["current_rank"]} }
+  end
+
   # TODO verify assumption: downrank loser before upranking winner
-  # TODO maybe optimize: grab all the members from highest ranked through lowest ranked, adjust ranks in memory, then do all the saves (with deferred constraints?)
   def apply_ranking_changes
-    transaction do
-      if draw?
-        if !lower_ranked_member.rank_adjacent?(higher_ranked_member)
-          Member.uprank(lower_ranked_member)
-        end
-      elsif losing_member.outranks?(winning_member)
-        rank_difference = (winning_member.current_rank - losing_member.current_rank).abs
-        uprank_earned = rank_difference / 2
-        Member.downrank(losing_member)
-        Member.uprank(winning_member, uprank_earned)
+    transaction do 
+      Member.connection.execute "SET CONSTRAINTS members_current_rank DEFERRED"
+      ranking_changes.each do |change|
+        Member.update(change[:id], current_rank: change[:ranking_change][1])
       end
     end
+    ranking_changes
   end
 
   def apply_games_played_changes
