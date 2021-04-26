@@ -26,7 +26,7 @@ class MatchesController < ApplicationController
 
     respond_to do |format|
       if @match.save
-        format.html { redirect_to @match, notice: "Match was successfully created." }
+        format.html { redirect_to members_url, notice: "Match was successfully created." }
         format.json { render :show, status: :created, location: @match }
       else
         format.html { render :new, status: :unprocessable_entity }
