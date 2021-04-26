@@ -11,6 +11,14 @@
   </head>
 
   <body>
+    <h1>Hardstuck</h1>
+    <%= link_to 'Leaderboard', members_path %>
+    |
+    <%= link_to 'Add Member', new_member_path %>
+    |
+    <%= link_to 'Capture Match', new_match_path %>
+    |
+    <%= link_to 'List Matches', matches_path %>
     <%= yield %>
   </body>
 </html>

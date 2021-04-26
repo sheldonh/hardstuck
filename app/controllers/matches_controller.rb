@@ -4,7 +4,7 @@ class MatchesController < ApplicationController
 
   # GET /matches or /matches.json
   def index
-    @matches = Match.all
+    @matches = Match.order(created_at: :desc).all
   end
 
   # GET /matches/1 or /matches/1.json
