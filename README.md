@@ -10,7 +10,7 @@ sudo postgresql-setup initdb
 sudo sed -i -e 's/^\(local.*\)peer/\1trust/' /var/lib/pgsql/data/pg_hba.conf
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
-sudo -u postgres createuser -d hardstuck
+sudo -u postgres createuser -s hardstuck
 
 rvm get stable
 rvm install 2.7
