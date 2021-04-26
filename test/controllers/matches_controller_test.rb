@@ -20,7 +20,7 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
       post matches_url, params: { match: { draw: @match.draw, losing_member_id: @match.losing_member_id, winning_member_id: @match.winning_member_id } }
     end
 
-    assert_redirected_to match_url(Match.last)
+    assert_redirected_to members_url
   end
 
   test "should show match" do
