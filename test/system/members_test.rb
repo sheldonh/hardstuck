@@ -7,17 +7,15 @@ class MembersTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit members_url
-    assert_selector "h1", text: "Members"
+    assert_selector "h1", text: "Leaderboard"
   end
 
   test "creating a Member" do
     visit members_url
-    click_on "New Member"
+    click_on "Add Member"
 
-    fill_in "Birthday", with: @member.birthday
-    fill_in "Current rank", with: @member.current_rank
+    select_date @member.birthday, from: "member_birthday"
     fill_in "Email address", with: @member.email_address
-    fill_in "Games played", with: @member.games_played
     fill_in "Name", with: @member.name
     fill_in "Surname", with: @member.surname
     click_on "Create Member"
@@ -30,10 +28,8 @@ class MembersTest < ApplicationSystemTestCase
     visit members_url
     click_on "Edit", match: :first
 
-    fill_in "Birthday", with: @member.birthday
-    fill_in "Current rank", with: @member.current_rank
+    select_date @member.birthday, from: "member_birthday"
     fill_in "Email address", with: @member.email_address
-    fill_in "Games played", with: @member.games_played
     fill_in "Name", with: @member.name
     fill_in "Surname", with: @member.surname
     click_on "Update Member"
@@ -50,4 +46,13 @@ class MembersTest < ApplicationSystemTestCase
 
     assert_text "Member was successfully destroyed"
   end
+
+  # Source: https://stackoverflow.com/a/27244201
+  def select_date(date, options = {})
+    field = options[:from]
+    select date.strftime('%Y'),  :from => "#{field}_1i"
+    select date.strftime('%B'),  :from => "#{field}_2i"
+    select date.strftime('%-d'), :from => "#{field}_3i"
+  end
+
 end

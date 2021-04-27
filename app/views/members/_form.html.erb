@@ -28,7 +28,7 @@
 
   <div class="field">
     <%= form.label :birthday %>
-    <%= form.date_select :birthday, start_year: 1900, default: 18.years.ago %>
+    <%= form.date_select :birthday, start_year: 1900, end_year: Date.today.year, default: 18.years.ago %>
   </div>
 
   <div class="actions">
