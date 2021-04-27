@@ -71,6 +71,16 @@ rails db:create db:migrate
 rails server -b 0.0.0.0
 ```
 
+Heroku setup:
+
+```
+sudo snap install --classic heroku
+heroku login -i
+heroku create
+git push heroku master
+heroku run rails db:migrate db:seed
+```
+
 Fantasy code:
 
 ```
